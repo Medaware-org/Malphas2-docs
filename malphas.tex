@@ -2,14 +2,17 @@
 
 \usepackage{amsmath}
 \usepackage{tikz}
-\usepackage{fancyhdr}
+\usepackage{blindtext}
 
 \usetikzlibrary{backgrounds}
 
-\usepackage[a4paper, landscape, left=15mm, right=15mm, top=15mm, bottom=15mm]{geometry}
+\usepackage[a4paper, landscape, left=15mm, right=15mm, top=15mm, bottom=20mm]{geometry}
 
 \begin{document}
 	\include{common}
 	\include{pages/title}
+	\include{pages/contents}
+	\pagenumbering{arabic}
 	\include{pages/abstract}
+	\include{pages/arch}
 \end{document}
