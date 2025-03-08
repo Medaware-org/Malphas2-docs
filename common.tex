@@ -1,0 +1,11 @@
+\newcommand{\xsection}[2]{
+	\section{#1}\vspace{-5mm}
+	\begin{tikzpicture}
+		\draw[domain=-10:10, samples=1000, smooth, variable=\x, draw=black!30] plot ({\x * \textwidth / 20}, {
+			sin((15 * \x) r) * (exp(-0.7 * (\x - #2)^2) * 0.5)
+		});
+		\draw[domain=-10:10, samples=1000, smooth, variable=\x, draw=black!30] plot ({\x * \textwidth / 20}, {
+			sin((15 * \x) r + pi r) * (exp(-0.7 * (\x - #2)^2) * 0.5)
+		});
+	\end{tikzpicture}
+}

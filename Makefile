@@ -1,5 +1,5 @@
 malphas.pdf: malphas.tex
-	xelatex malphas.tex
+	xelatex malphas.tex && xelatex malphas.tex
 
 open: clean malphas.pdf
 	open malphas.pdf
