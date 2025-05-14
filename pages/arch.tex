@@ -1,1 +1,21 @@
-\xsection{Architecture}{5}
+\xsection{Architecture Changes}{5}
+This revision of \textit{Malphas} has subtely altered the architecture of the project and its arrangement of submodules.
+The most significant change is the introduction of a \textbf{Proxt Server}. The reason for this new module was the introduction
+of authentication via \textbf{OAuth}, and was further motivated by the lack of motivation of the developers to implement said
+authentication facilities in \verb|C++|, which was and still is the preferred backend language of choice. Thus, a strategy
+was devised to outsource this daunting responsibility onto a lightweight proxy. The proxy itself is written in \verb|Kotlin|
+and is powered by \verb|Ktor|, a minimal and lightweight web framework designed for implementing microservices. \\[\baselineskip]
+The proxy implements two additional routes, namely \verb|/login| and \verb|/callback|, which are used for \textbf{OAuth}:
+The \verb|/login| route redirects the user to Google's authentication frontend\footnote{
+	Google is the OAuth provider we decided to go with for this project.
+} which, upon completion, redirects the user back to \verb|/callback|. This is where the access token is acquired and
+the user is sent an authentication cookie containing the aforementioned token, their user ID, as well as an \textbf{OAuth}
+``state''. The user is subsequently redirected back to the \textit{Malphas} frontend.
+Besides the two aforementioned routes, the proxy passess all requests onto the original backend at a configurable \verb|URL|,
+where they are dealt with accordingly. However, the proxy will only forward requests containing the authentication cookie
+with a valid access token, unless the route is explicitly declared public in the proxy config. \\[\baselineskip]
+Since the entirety of the authentication process has been delegated away to another service, parts of the frontend as
+well as the original backend which were previously responsible for this process could be removed entirely. As such,
+the authentication endpoints were removed from the original backend. A database migration was performed to remove any
+tables and remaining columns that previously dealt with authentication. Since Google relies on string values for identifying
+their users, the type of the \verb|ID| field was also changed to \verb|TEXT|. 

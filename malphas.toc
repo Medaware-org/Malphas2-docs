@@ -1,3 +1,0 @@
-\contentsline {section}{\numberline {1}Abstract}{1}{}%
-\contentsline {section}{\numberline {2}Known Bugs}{2}{}%
-\contentsline {section}{\numberline {3}Architecture}{3}{}%
