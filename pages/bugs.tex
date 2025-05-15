@@ -2,5 +2,22 @@
 \xquote{It deletes more than it should, but in the context of its functionality, that's better than deleting too little.}
 {Rasti, 2025, On the exemplary stability of Malphas}
 \vspace{\baselineskip}
-The above quote demonstates just one of the many known bugs in the first version of Malphas.
-This section aims to document the issues that we discovered when testing said version, which we aim to fix in the second revision.
+The above quote demonstates just one of the many known bugs in the first version of Malphas. And while countless issues
+and curious behaviours still plague the entire frontend, tha particular bug mentioned in the quote has successfully been
+tracked down and resolved. Although the exact reasons for why this fix works are between \verb|JavaScript| and God,
+what seems to have caused was re-building the \verb|AST| inside of the callback of \verb|traverseAllAsts(...)|, i.e.
+\begin{lstlisting}
+ traverseAllAsts(this.ast, (node) => {
+	...
+        if ('location' in node) {
+        	if (this.rayCast(this.snappedMousePosition, node.element.geometry()
+				as unknown as [number, number][], node.location)) {
+                	deleteCircuit(deleteNode, () => {
+                        	this.rebuildAst()
+                        })
+                }
+        }
+})
+\end{lstlisting}
+It is worth mentioning that the way \verb|deleteCircuit| is implemented, is that the lambda callback is only triggered
+after an asynchronous request completes, which may explain the undefined behaviour.
